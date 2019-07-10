@@ -88,7 +88,8 @@ class DooCppSubService(object):
         content = content.replace("\nend\r\n", "")
         return json.loads(content)["response_data"]
 
-    async def long_receive(self, size=1024, name=""):
+    # async def long_receive(self, size=1024, name=""):
+    def long_receive(self, size=2048, name=""):
         """
         长链接接收数据
         :param: name
@@ -102,7 +103,8 @@ class DooCppSubService(object):
                 if "\nend\r\n" in data:
                     break
             content = content.replace("\nend\r", "")
-            print("{}".format(name), json.loads(content)["response_data"]["data_body"])
+            # print("{}".format(name), json.loads(content)["response_data"]["data_body"])
+            print("{}".format(name), content)
 
     def tcp_close(self):
         """
