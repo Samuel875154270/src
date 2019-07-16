@@ -1,4 +1,4 @@
-from run_cpp_service.UnitOpenCloudV4Handler import UnitOpenCloudV4Handler
+from cpp_service.UnitOpenCloudV4Handler import UnitOpenCloudV4Handler
 import config
 import unittest
 

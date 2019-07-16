@@ -1,4 +1,4 @@
-from run_cpp_service.SubService import SubService
+from cpp_service.SubService import SubService
 import config
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from run_cpp_service.UnitSocialTradingHandler import UnitSocialTradingHandler
+from cpp_service.UnitSocialTradingHandler import UnitSocialTradingHandler
 import config
 import unittest
 
