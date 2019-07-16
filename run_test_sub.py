@@ -12,15 +12,15 @@ if __name__ == "__main__":
     service = SubService(host, port, server_id, licences)
 
     threads = []
-    for i in range(3):
-        if i == 0:
-            th = threading.Thread(target=service.sub_order, args=())
+    for s in ["subsc_order_info", "subsc_position_info", "subsc_deal_info"]:
+        if s == "subsc_order_info":
+            th = threading.Thread(target=service.sub, args=(s,))
             # service.sub_order()
-        elif i == 1:
-            th = threading.Thread(target=service.sub_position, args=())
+        elif s == "subsc_position_info":
+            th = threading.Thread(target=service.sub, args=(s,))
             # service.sub_position()
         else:
-            th = threading.Thread(target=service.sub_deal, args=())
+            th = threading.Thread(target=service.sub, args=(s,))
             # service.sub_deal()
         th.start()
         threads.append(th)
