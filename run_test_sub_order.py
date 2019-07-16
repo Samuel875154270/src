@@ -9,12 +9,5 @@ if __name__ == "__main__":
     licences = gateway["licences"]
 
     service = SubService(host, port, server_id, licences)
-
     """订阅order"""
-    # service.sub_order()
-
-    """订阅position"""
-    # service.sub_position()
-
-    """订阅deal"""
-    # service.sub_deal()
+    service.sub_order()
