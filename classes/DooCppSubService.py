@@ -104,7 +104,9 @@ class DooCppSubService(object):
                     break
             content = content.replace("\nend\r", "")
             # print("{}".format(name), json.loads(content)["response_data"]["data_body"])
-            print("{}".format(name), content)
+            if "152188" in content:
+                print("{}".format(name), content)
+                # print("{}".format(name), json.dumps(json.loads(content)["response_data"]["data_body"], ensure_ascii=False))
 
     def tcp_close(self):
         """
