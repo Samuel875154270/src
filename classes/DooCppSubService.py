@@ -73,15 +73,15 @@ class DooCppSubService(object):
         self.client.send(data)
         # print("发送后")
 
-    def receive(self, size=1024, name=""):
+    def receive(self, size=1024):
         """
         接收数据
-        :param: name
         :return:
         """
         content = ""
         while True:
-            data = self.client.recv(size).decode()
+            data = self.client.recv(size)
+            data = data.decode()
             content += data
             if "\nend\r\n" in data:
                 break
@@ -98,7 +98,9 @@ class DooCppSubService(object):
         while True:
             content = ""
             while True:
-                data = self.client.recv(size).decode()
+                data = self.client.recv(size)
+                # print(data)
+                data = data.decode()
                 content += data
                 if "\nend\r\n" in data:
                     break
