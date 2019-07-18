@@ -1,4 +1,4 @@
-from cpp_service.UnitSocialTradingHandler import UnitSocialTradingHandler
+from cpp_service.CppServiceHandler import CppServiceHandler
 import config
 import unittest
 
@@ -6,13 +6,13 @@ gateway = config.trading_system_gateway
 
 
 class RunOpenCloud(unittest.TestCase):
-    service = UnitSocialTradingHandler()
+    service = CppServiceHandler()
     server_id = gateway["server_id"]
     licences = gateway["licences"]
 
     @classmethod
     def setUpClass(cls):
-        cls.service.init(host=gateway["host"], port=gateway["port"])
+        cls.service.init(host=gateway["host"], port=gateway["port"], message_type="TRADE")
 
     @classmethod
     def tearDownClass(cls):
@@ -24,5 +24,5 @@ class RunOpenCloud(unittest.TestCase):
         """
         cmd = "subsc_order_info"
         params = {}
-        result = self.service.call(self.server_id, self.licences, cmd, params, is_sub=True)
+        result = self.service.call(self.server_id, self.licences, cmd, params)
         print(result)

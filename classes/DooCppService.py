@@ -50,7 +50,7 @@ class DooCppService(object):
         self.client.settimeout(15)  # 设置超时时间，秒
         self.client.connect((host, port))  # 连接地址和端口
 
-    def send(self, cmd, server_id, licences, request_data=None, request_return_type=1, is_sub=False):
+    def send(self, cmd, server_id, licences, request_data=None, request_return_type=1):
         """
         发送数据
         :param cmd:
@@ -58,14 +58,12 @@ class DooCppService(object):
         :param licences:
         :param request_data:
         :param request_return_type:
-        :param is_sub:
         :return:
         """
-        print("send", is_sub)
         if request_data is None:
             request_data = {}
 
-        data = gateway_params(cmd, server_id, request_data, licences, request_return_type, is_sub)
+        data = gateway_params(cmd, server_id, request_data, licences, request_return_type)
 
         # 拼接数据格式
         data = "W{}QUIT".format(json.dumps(data)).encode()

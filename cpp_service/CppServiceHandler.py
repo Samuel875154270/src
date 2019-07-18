@@ -1,17 +1,19 @@
 from classes.DooCppService import DooCppService
 
 
-class UnitOpenCloudV4Handler(object):
+class CppServiceHandler(object):
     client = False
-    message_type = "CRM"
+    message_type = None
     request_zone = "A"
 
-    def init(self, host, port):
+    def init(self, host, port, message_type):
         """
         初始化TCP连接
         :param host:
         :param port:
+        :param message_type:
         """
+        self.message_type = message_type
         self.client = DooCppService()
         self.client.init(host, port)
 
@@ -22,14 +24,13 @@ class UnitOpenCloudV4Handler(object):
         """
         self.client.tcp_close()
 
-    def call(self, server_id, licences, cmd, params=None, is_sub=False):
+    def call(self, server_id, licences, cmd, params=None):
         """
         请求tcp接口
         :param: server_id
         :param: licences
         :param: cmd
         :param: params
-        :param: is_sub
         :return:
         """
         if params is None:
@@ -41,6 +42,6 @@ class UnitOpenCloudV4Handler(object):
             "request_data": params
         }
 
-        self.client.send(cmd, server_id, licences, request_data, is_sub)
+        self.client.send(cmd, server_id, licences, request_data)
 
         return self.client.receive()
