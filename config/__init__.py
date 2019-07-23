@@ -1,3 +1,4 @@
+"""MT gateway配置"""
 gateway = {
     "social_gateway": {
         "host": "192.168.1.228",
