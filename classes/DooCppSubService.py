@@ -78,14 +78,13 @@ class DooCppSubService(object):
         接收数据
         :return:
         """
-        content = ""
+        content = b""
         while True:
             data = self.client.recv(size)
-            data = data.decode()
             content += data
-            if "\nend\r\n" in data:
+            if b"\nend\r\n" in data:
                 break
-        content = content.replace("\nend\r\n", "")
+        content = content.decode().replace("\nend\r\n", "")
         return json.loads(content)["response_data"]
 
     # async def long_receive(self, size=1024, name=""):

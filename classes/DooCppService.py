@@ -1,6 +1,8 @@
 import common
 import json
 import socket
+import struct
+import time
 
 
 def gateway_params(cmd, server_id, request_data, licences, request_return_type=1, is_sub=False):
@@ -47,7 +49,7 @@ class DooCppService(object):
         :return:
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.settimeout(15)  # 设置超时时间，秒
+        # self.client.settimeout(30)  # 设置超时时间，秒
         self.client.connect((host, port))  # 连接地址和端口
 
     def send(self, cmd, server_id, licences, request_data=None, request_return_type=1):
@@ -60,6 +62,7 @@ class DooCppService(object):
         :param request_return_type:
         :return:
         """
+        t = time.time()
         if request_data is None:
             request_data = {}
 
@@ -68,29 +71,88 @@ class DooCppService(object):
         # 拼接数据格式
         data = "W{}QUIT".format(json.dumps(data)).encode()
         print(data)
-        print("发送前")
+        # print("发送前")
         self.client.send(data)
-        print("发送后")
+        # print("发送后")
 
-    def receive(self, size=1024, flag="\nend\r\n"):
-        """
-        接收数据
-        :return:
-        """
         try:
-            print("接收前")
-            content = ""
-            while True:
-                data = self.client.recv(size).decode()
-                content += data
-                if flag in data:
-                    break
-            print("接收后")
+            # 接收报头长度
+            res = self.client.recv(4)
+            # print(res)
+            # 对报头长度解压
+            header_size = struct.unpack('i', res)[0]
+            # print(header_size)
+            # 接收报头长度的内容
+            header_bytes = self.client.recv(header_size)
+            content = res + header_bytes
+            # content = (res + header_bytes).decode("gbk").replace("\nend\r\n", "")
+            print(cmd, "执行时间：{}s".format(round(time.time() - t, 2)))
             return content
         except socket.timeout as e:
             print("接收超时：", e)
         except Exception as e:
             print("其他错误：", e)
+
+        # try:
+        #     # print("接收前")
+        #     content = b""
+        #     while True:
+        #         data = self.client.recv(1024)
+        #         content += data
+        #         if b"\nend\r\n" in data:
+        #             break
+        #     content = content.decode().split("\nend\r\n")
+        #     # print("接收后")
+        #     return content
+        # except socket.timeout as e:
+        #     print("接收超时：", e)
+        # except Exception as e:
+        #     print("其他错误：", e)
+
+    def receive(self):
+        """
+        接收数据
+        :return:
+        """
+        try:
+            # 接收报头长度
+            res = self.client.recv(4)
+            # print(res)
+            # 对报头长度解压
+            header_size = struct.unpack('i', res)[0]
+            # print(header_size)
+            # 接收报头长度的内容
+            header_bytes = self.client.recv(header_size)
+            content = res + header_bytes
+            # content = (res + header_bytes).decode("gbk").replace("\nend\r\n", "")
+            return content
+
+        except socket.timeout as e:
+            print("接收超时：", e)
+        except Exception as e:
+            print("其他错误：", e)
+
+    # def receive(self, size=1024):
+    #     """
+    #     接收数据
+    #     :param: size
+    #     :return:
+    #     """
+    #     try:
+    #         # print("接收前")
+    #         content = b""
+    #         while True:
+    #             data = self.client.recv(size)
+    #             content += data
+    #             if b"\nend\r\n" in data:
+    #                 break
+    #         content = content.decode().split("\nend\r\n")
+    #         # print("接收后")
+    #         return content
+    #     except socket.timeout as e:
+    #         print("接收超时：", e)
+    #     except Exception as e:
+    #         print("其他错误：", e)
 
     def tcp_close(self):
         """

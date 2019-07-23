@@ -2,7 +2,7 @@ from cpp_service.CppServiceHandler import CppServiceHandler
 import config
 import unittest
 
-gateway = config.trading_system_gateway
+gateway = config.gateway["trading_system_gateway"]
 
 
 class RunOpenCloud(unittest.TestCase):

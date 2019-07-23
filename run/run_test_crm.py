@@ -2,7 +2,7 @@ from cpp_service.CppServiceHandler import CppServiceHandler
 import config
 import unittest
 
-gateway = config.crm_gateway
+gateway = config.gateway["crm_gateway"]
 
 
 class RunOpenCloud(unittest.TestCase):

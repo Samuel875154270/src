@@ -42,6 +42,6 @@ class CppServiceHandler(object):
             "request_data": params
         }
 
-        self.client.send(cmd, server_id, licences, request_data)
+        return self.client.send(cmd, server_id, licences, request_data)
 
-        return self.client.receive()
+        # return self.client.receive()

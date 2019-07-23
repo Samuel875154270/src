@@ -2,7 +2,7 @@ from cpp_service.SubService import SubService
 import config
 
 if __name__ == "__main__":
-    gateway = config.trading_system_gateway
+    gateway = config.gateway["trading_system_gateway"]
     host = gateway["host"]
     port = gateway["port"]
     server_id = gateway["server_id"]
