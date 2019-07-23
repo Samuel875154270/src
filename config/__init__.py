@@ -39,11 +39,11 @@ price_cloud = {
     },
     "extranet": {
         # 公网（未开启代理协议）
-        # "host": "songmaokeji.f3322.net",
-        # "port": 12960,
-        # """公网（已开启代理协议，仅允许白名单IP）"""
         "host": "songmaokeji.f3322.net",
-        "port": 13001,
+        "port": 12960,
+        # """公网（已开启代理协议，仅允许白名单IP）"""
+        # "host": "songmaokeji.f3322.net",
+        # "port": 13001,
     },
     "secret_key": "htrh6)(4j5345#jkld",
     "username": "client",
