@@ -86,7 +86,8 @@ class DooCppService(object):
             header_bytes = self.client.recv(header_size)
             content = res + header_bytes
             # content = (res + header_bytes).decode("gbk").replace("\nend\r\n", "")
-            print(cmd, "执行时间：{}s".format(round(time.time() - t, 2)))
+            print(cmd, "开始时间：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))))
+            print(cmd, "执行时间：{}ms".format(round((time.time() - t) * 1000)))
             return content
         except socket.timeout as e:
             print("接收超时：", e)

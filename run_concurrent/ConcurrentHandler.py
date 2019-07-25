@@ -140,8 +140,8 @@ class ConcurrentHandler(object):
 
 
 if __name__ == "__main__":
-    gateway = config.social_gateway
-    service = ConcurrentHandler(gateway["host"], gateway["port"], gateway["server_id"], gateway["licences"])
+    social_gateway = config["social_gateway"]
+    service = ConcurrentHandler(social_gateway["host"], social_gateway["port"], social_gateway["server_id"], social_gateway["licences"])
 
     functions = [
         # "new_order",
