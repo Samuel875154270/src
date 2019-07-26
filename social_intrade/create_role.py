@@ -16,8 +16,8 @@ end_login = 173001
 
 value = []
 all_login = list(range(start_login, end_login))
-for login in [2089102782]:
-    # for login in all_login:
+# for login in [2089102782]:
+for login in all_login:
     value.append({"server_id": server_id, "login": login})
 params = {
     "type": role,
