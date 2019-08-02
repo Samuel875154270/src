@@ -4,8 +4,10 @@ gateway = {
         "host": "192.168.1.228",
         "port": 9400,
         # 公有
-        "server_id": "d06f-1e8d6b745",
+        "server_id": "d06f-1e8d6b745",  # test2
         "licences": "e656b991-5706-4cb1-af8f-f69323f8f7e4",
+        # "server_id": "b1b2-4ec7376e6",  # test1
+        # "licences": "2cbf112c-26d8-4f54-930c-41aed44ed261",
     },
     "trading_system_gateway": {
         "host": "192.168.1.228",

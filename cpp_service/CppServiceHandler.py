@@ -24,13 +24,14 @@ class CppServiceHandler(object):
         """
         self.client.tcp_close()
 
-    def call(self, server_id, licences, cmd, params=None):
+    def call(self, server_id, licences, cmd, params=None, i=0):
         """
         请求tcp接口
         :param: server_id
         :param: licences
         :param: cmd
         :param: params
+        :param: i
         :return:
         """
         if params is None:
@@ -41,7 +42,11 @@ class CppServiceHandler(object):
             "request_zone": self.request_zone,
             "request_data": params
         }
+        self.client.send(cmd, server_id, licences, request_data, count=i)
 
-        return self.client.send(cmd, server_id, licences, request_data)
-
-        # return self.client.receive()
+    def get(self, count):
+        """
+        获取结果
+        :return:
+        """
+        return self.client.receive(count)

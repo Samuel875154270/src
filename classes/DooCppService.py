@@ -1,8 +1,32 @@
 import common
 import json
+import os
 import socket
-import struct
 import time
+
+
+def concat_result(list1, list2):
+    """
+    处理结果
+    :param list1:
+    :param list2:
+    :return:
+    """
+    list1 = sorted(list1, key=lambda x: list(x.items())[0][0])
+    list2 = sorted(list2, key=lambda x: list(x.items())[0][0])
+
+    if len(list1) != len(list2):
+        return False
+
+    result = []
+    for l in range(len(list1)):
+        result.append({
+            "request_id": list1[l]["request_id"],
+            "request": list1[l],
+            "response": list2[l],
+        })
+
+    return result
 
 
 def gateway_params(cmd, server_id, request_data, licences, request_return_type=1, is_sub=False):
@@ -40,6 +64,7 @@ def gateway_params(cmd, server_id, request_data, licences, request_return_type=1
 
 class DooCppService(object):
     client = False
+    request_data = []
 
     def init(self, host, port):
         """
@@ -52,7 +77,7 @@ class DooCppService(object):
         # self.client.settimeout(30)  # 设置超时时间，秒
         self.client.connect((host, port))  # 连接地址和端口
 
-    def send(self, cmd, server_id, licences, request_data=None, request_return_type=1):
+    def send(self, cmd, server_id, licences, request_data=None, request_return_type=1, count=0):
         """
         发送数据
         :param cmd:
@@ -60,100 +85,85 @@ class DooCppService(object):
         :param licences:
         :param request_data:
         :param request_return_type:
+        :param count:
         :return:
         """
-        t = time.time()
         if request_data is None:
             request_data = {}
 
         data = gateway_params(cmd, server_id, request_data, licences, request_return_type)
+        self.request_data.append(data)  # 记录每次请求的参数
 
         # 拼接数据格式
         data = "W{}QUIT".format(json.dumps(data)).encode()
-        print(data)
         # print("发送前")
+        start_time = time.time()
+        print("程序{}".format(count), cmd,
+              "开始时间：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_time))),
+              "\n请求参数：{}".format(data))
         self.client.send(data)
         # print("发送后")
-
-        try:
-            # 接收报头长度
-            res = self.client.recv(4)
-            # print(res)
-            # 对报头长度解压
-            header_size = struct.unpack('i', res)[0]
-            # print(header_size)
-            # 接收报头长度的内容
-            header_bytes = self.client.recv(header_size)
-            content = res + header_bytes
-            # content = (res + header_bytes).decode("gbk").replace("\nend\r\n", "")
-            print(cmd, "开始时间：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))))
-            print(cmd, "执行时间：{}ms".format(round((time.time() - t) * 1000)))
-            return content
-        except socket.timeout as e:
-            print("接收超时：", e)
-        except Exception as e:
-            print("其他错误：", e)
 
         # try:
         #     # print("接收前")
         #     content = b""
-        #     while True:
+        #     data = ""
+        #     while data is not False:
         #         data = self.client.recv(1024)
         #         content += data
-        #         if b"\nend\r\n" in data:
+        #         if content[len(content) - 5:] == b'end\r\n':
         #             break
-        #     content = content.decode().split("\nend\r\n")
-        #     # print("接收后")
+        #
+        #     end_time = time.time()
+        #     if cmd == "multi_new_order":
+        #         print("程序{}".format(count), cmd,
+        #               "结束时间：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(end_time))),
+        #               "执行用时：{}ms".format(round((end_time - start_time) * 1000)), "\n返回结果：{}".format(content))
+        #     else:
+        #         print("程序{}".format(count), cmd,
+        #               "结束时间：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(end_time))),
+        #               "执行用时：{}ms".format(round((end_time - start_time) * 1000)), "\n返回结果：{}".format(content))
         #     return content
         # except socket.timeout as e:
-        #     print("接收超时：", e)
+        #     print(cmd, "接收超时：", e)
         # except Exception as e:
-        #     print("其他错误：", e)
+        #     print(cmd, "其他错误：", e)
 
-    def receive(self):
+    def receive(self, times=1):
         """
         接收数据
+        :param times:
         :return:
         """
-        try:
-            # 接收报头长度
-            res = self.client.recv(4)
-            # print(res)
-            # 对报头长度解压
-            header_size = struct.unpack('i', res)[0]
-            # print(header_size)
-            # 接收报头长度的内容
-            header_bytes = self.client.recv(header_size)
-            content = res + header_bytes
-            # content = (res + header_bytes).decode("gbk").replace("\nend\r\n", "")
-            return content
+        i = 1
+        result = b""
+        all_result = []
+        while times > 0:
+            content = self.client.recv(1024)
+            result += content
+            count = result.count(b"\nend\r\n")
+            if count == 0:
+                continue
+            else:
+                result_list = result.split(b"\nend\r\n")
+                for r in result_list[:-1]:
+                    all_result.append(json.loads(r))
+                    name = "log-{}.log".format(i)
+                    if not os.path.exists(name):
+                        file = open(name, "w", encoding="GBK")
+                        file.close()
+                    if os.path.getsize(name) > 20 * 1024 * 1024:
+                        name = "log-{}.log".format(i + 1)
+                    with open(name, "a", encoding="GBK") as file:
+                        file.write("Time: {}\nResult: {}\n\n".format(
+                            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())), r))
+                result = result_list[-1]
 
-        except socket.timeout as e:
-            print("接收超时：", e)
-        except Exception as e:
-            print("其他错误：", e)
+            times -= 1
 
-    # def receive(self, size=1024):
-    #     """
-    #     接收数据
-    #     :param: size
-    #     :return:
-    #     """
-    #     try:
-    #         # print("接收前")
-    #         content = b""
-    #         while True:
-    #             data = self.client.recv(size)
-    #             content += data
-    #             if b"\nend\r\n" in data:
-    #                 break
-    #         content = content.decode().split("\nend\r\n")
-    #         # print("接收后")
-    #         return content
-    #     except socket.timeout as e:
-    #         print("接收超时：", e)
-    #     except Exception as e:
-    #         print("其他错误：", e)
+        finally_result = concat_result(self.request_data, all_result)
+
+        return finally_result
 
     def tcp_close(self):
         """

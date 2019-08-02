@@ -176,32 +176,15 @@ class ConcurrentHandler(object):
                 new_th.start()
                 new_threads.append(new_th)
 
-            for new_t in new_threads:
-                new_t.join()
+            # for new_t in new_threads:
+            #     new_t.join()
 
-    def get_result(self, count):
-        return self.service.get(count)
-
-    def close(self):
-        self.service.close()
+    def get_result(self):
+        self.service.get()
 
 
 if __name__ == "__main__":
     social_gateway = config.gateway["social_gateway"]
-    # service = ConcurrentHandler(social_gateway["host"], social_gateway["port"], social_gateway["server_id"],
-    #                             social_gateway["licences"])
-    service = ConcurrentHandler("192.168.1.190", 9117, social_gateway["server_id"],
+    service = ConcurrentHandler(social_gateway["host"], social_gateway["port"], social_gateway["server_id"],
                                 social_gateway["licences"])
-
-    fun_name_list = [
-        # {"new_order_ex": 100},
-        # {"get_all_symbolinfo": 1},
-        # {"select_account": 20},
-        # {"get_opened_order_info": 1},
-        # {"get_all_login": 1},
-        {"multi_new_order": 1},
-    ]
-    service.many(fun_name_list)
-    result = service.get_result(1)
-    service.close()
-    print(result)
+    service.get_result()

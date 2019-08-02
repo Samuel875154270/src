@@ -47,24 +47,3 @@ for login in all_login:
 
     print(login, response)
     # time.sleep(1)
-
-# value = []
-# all_login = list(range(start_login, end_login))
-# # for login in [2089102782]:
-# for login in all_login:
-#     value.append({"server_id": server_id, "login": login})
-# params = {
-#     "type": role,
-#     "value": value
-# }
-# s = requests.session()
-# response = s.post(url="{}://{}{}".format(protocol, host, api), json=params, headers=headers).text
-# print(response)
-# data = json.loads(response)["data"]
-# # 合并login与对应的id
-# login_id = list(map(lambda x, y: {**x, **{"login": y, "server_id": server_id}}, data, all_login))
-#
-# # 判断文件名和写入文件
-# file_name = "pid_{}.json".format(server_id) if role == "publish" else "fid_{}.json".format(server_id)
-# with open(file_name, "a") as file:
-#     file.write(json.dumps(login_id, indent=4))
