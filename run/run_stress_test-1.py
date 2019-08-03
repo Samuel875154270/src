@@ -82,35 +82,28 @@ if __name__ == "__main__":
     # 根据login批量开仓
     start_login = 100010
     end_login = 1000010
-    # login_1 = list(range(100081, 100455 + 1))
-    # login_2 = list(range(170031, 170120 + 1))
-    login_list = list(range(start_login, start_login + 1))
-    # login_list = [100001, 100002, 100003, 100004, 100005]
-    # login_list = login_1
+    login_1 = list(range(100081, 100455 + 1))
+    login_2 = list(range(170031, 170120 + 1))
+    # login_list = list(range(start_login, start_login + 1))
+    login_list = [100001, 100002, 100003, 100004, 100005]
+    login_list = login_1
     params = {
         "data_array": []
     }
-
-    l = len(login_list)
-    times = int(l / 50) if l % 50 == 0 else int(l / 50) + 1
-    print(times)
-    for t in range(times):
-        for login in login_list[t * 50: (t + 1) * 50]:
-            params["data_array"].append(
-                {
-                    "cmd": 1,
-                    "login": login,
-                    "symbol": "USDJPY",  # USDJPY、CADJPY、EURGBP、EURUSD
-                    "volume": 1,
-                    "tp": 0.0,
-                    "sl": 0.0,
-                    "comment": "stress test",
-                    "follow_id": "trader is {}".format(login)
-                }
-            )
-        service.multi_new_order(params)
-        params["data_array"] = []
-
+    for login in login_list:
+        params["data_array"].append(
+            {
+                "cmd": 1,
+                "login": login,
+                "symbol": "USDJPY",  # USDJPY、CADJPY、EURGBP、EURUSD
+                "volume": 1,
+                "tp": 0.0,
+                "sl": 0.0,
+                "comment": "stress test",
+                "follow_id": "trader is {}".format(login)
+            }
+        )
+    service.multi_new_order(params)
     result = service.get_result(1)
     print(result)
 

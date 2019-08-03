@@ -34,13 +34,13 @@ params = {
     "default_deposit": 50000
 }
 
-start_login = 172501
-end_login = 173001
+start_login = 100081
+end_login = 100455
 
 for login in range(start_login, end_login):
     params["login"] = login
-    params["name"] = "Follower {}".format(login)
-    params["email"] = "test{}@follower.com".format(login)
+    params["name"] = "Trader {}".format(login)
+    params["email"] = "test{}@trader.com".format(login)
     # print(params)
     result = service.call(server_id, licences, cmd, params)
     print(result)

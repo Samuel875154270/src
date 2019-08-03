@@ -66,6 +66,16 @@ class ConcurrentHandler(object):
         cmd = "multi_close_order"
         self.service.call(self.server_id, self.licences, cmd, params, c)
 
+    def get_opened_order_info(self, params, c=1):
+        """
+        批量平仓
+        :param params:
+        :param c:
+        :return:
+        """
+        cmd = "get_opened_order_info"
+        self.service.call(self.server_id, self.licences, cmd, params, c)
+
     def get_result(self, count):
         return self.service.get(count)
 
@@ -79,61 +89,58 @@ if __name__ == "__main__":
     service = ConcurrentHandler(social_gateway["host"], social_gateway["port"], social_gateway["server_id"],
                                 social_gateway["licences"])
 
-    # 根据login批量开仓
-    start_login = 100010
-    end_login = 1000010
-    # login_1 = list(range(100081, 100455 + 1))
-    # login_2 = list(range(170031, 170120 + 1))
-    login_list = list(range(start_login, start_login + 1))
-    # login_list = [100001, 100002, 100003, 100004, 100005]
-    # login_list = login_1
-    params = {
-        "data_array": []
-    }
+    # # 根据login批量开仓
+    # start_login, end_login = 100001, 100001
+    # login_list = list(range(start_login, end_login + 1))
+    # params = {
+    #     "data_array": []
+    # }
+    # for login in login_list:
+    #     params["data_array"].append(
+    #         {
+    #             "cmd": 1,
+    #             "login": login,
+    #             "symbol": "USDJPY",  # USDJPY、CADJPY、EURGBP、EURUSD
+    #             "volume": 10,
+    #             "tp": 0.0,
+    #             "sl": 0.0,
+    #             "comment": "stress test",
+    #             "follow_id": "trader is {}".format(login)
+    #         }
+    #     )
+    # service.multi_new_order(params)
+    # result = service.get_result(1)
+    # print(result)
 
-    l = len(login_list)
-    times = int(l / 50) if l % 50 == 0 else int(l / 50) + 1
-    print(times)
-    for t in range(times):
-        for login in login_list[t * 50: (t + 1) * 50]:
-            params["data_array"].append(
-                {
-                    "cmd": 1,
-                    "login": login,
-                    "symbol": "USDJPY",  # USDJPY、CADJPY、EURGBP、EURUSD
-                    "volume": 1,
-                    "tp": 0.0,
-                    "sl": 0.0,
-                    "comment": "stress test",
-                    "follow_id": "trader is {}".format(login)
-                }
-            )
-        service.multi_new_order(params)
-        params["data_array"] = []
-
-    result = service.get_result(1)
-    print(result)
-
-    # # 根据login和order平仓
+    login = 100010
+    # 根据login获取在途订单
+    service.get_opened_order_info(params={"login": login})
+    position = service.get_result(1)[0]["response"]["response_data"]["data_array"][0]
+    login_order = []
+    for p in position:
+        login_order.append((p["login"], p["order"]))
+    print(len(login_order))
+    # 根据login和order平仓
     # login_order = [
-    #     (104500, 192172),
+    #     (100003, 192292),
     # ]
-    # threads = []
-    # for lo in login_order:
-    #     params = {
-    #         "login": lo[0],
-    #         "order": lo[1],
-    #     }
-    #     th = threading.Thread(target=service.close_order, args=(params,))
-    #     th.start()
-    #     threads.append(th)
-    #
-    # for t in threads:
-    #     t.join()
-    #
-    # result = service.get_result(len(threads))
-    # for r in result:
-    #     print(r)
+    threads = []
+    for lo in login_order:
+        params = {
+            "login": lo[0],
+            "order": lo[1],
+        }
+        th = threading.Thread(target=service.close_order, args=(params,))
+        th.start()
+        threads.append(th)
+
+    for t in threads:
+        t.join()
+
+    result = service.get_result(len(threads))
+    result = result if result else []
+    for r in result:
+        print(r)
 
     # 断开链接
     service.close()

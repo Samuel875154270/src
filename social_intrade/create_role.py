@@ -9,12 +9,12 @@ headers = config.web_headers
 protocol = "https"
 host = "intrade.doo.tech"
 api = "/follow/create"
-headers["Cookie"] = "sessionID=o8giG9NLDRoecXAQd5eMWKn8AzHC6QDb; sessionID.sig=oxt-i9hVlyODn5deg5fSlV7xie0"
+headers["Cookie"] = "sessionID=cMBKu4PFWoHsF7CmUvUGJBeES0NJwPB5; sessionID.sig=EKX7usjeVwRH9pJagNDYpcdhA-Y"
 headers["Host"] = host
 server_id = "de1e-d4f23b1ed"
-role = "follow"  # publish、follow
-start_login = 101001
-end_login = 104500
+role = "publish"  # publish、follow
+start_login = 100081
+end_login = 100455
 
 all_login = list(range(start_login, end_login + 1))
 s = requests.session()
