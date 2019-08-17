@@ -112,7 +112,7 @@ if __name__ == "__main__":
     # result = service.get_result(1)
     # print(result)
 
-    login = 100010
+    login = 100008
     # 根据login获取在途订单
     service.get_opened_order_info(params={"login": login})
     position = service.get_result(1)[0]["response"]["response_data"]["data_array"][0]
@@ -130,6 +130,7 @@ if __name__ == "__main__":
             "login": lo[0],
             "order": lo[1],
         }
+        print(params)
         th = threading.Thread(target=service.close_order, args=(params,))
         th.start()
         threads.append(th)

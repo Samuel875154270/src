@@ -148,12 +148,12 @@ class DooCppService(object):
                 result_list = result.split(b"\nend\r\n")
                 for r in result_list[:-1]:
                     all_result.append(json.loads(r))
-                    name = "log-{}.log".format(i)
+                    name = "{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i)
                     if not os.path.exists(name):
                         file = open(name, "w", encoding="GBK")
                         file.close()
                     if os.path.getsize(name) > 20 * 1024 * 1024:
-                        name = "log-{}.log".format(i + 1)
+                        name = "{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i + 1)
                     with open(name, "a", encoding="GBK") as file:
                         file.write("Time: {}\nResult: {}\n\n".format(
                             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())), r))

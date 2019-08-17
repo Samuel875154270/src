@@ -2,6 +2,7 @@ import config
 import json
 import threading
 import time
+from functools import reduce
 from cpp_service.CppServiceHandler import CppServiceHandler
 
 
@@ -79,17 +80,30 @@ class ConcurrentHandler(object):
         params = {
             "data_array": []
         }
-        for i in range(1):
+        # for i in range(1):
+        #     params["data_array"].append(
+        #         {
+        #             "cmd": 1,
+        #             "comment": "test",
+        #             "follow_id": "test test",
+        #             "login": 2089102728,
+        #             "sl": 0.0,
+        #             "symbol": "EURUSD",
+        #             "tp": 0.0,
+        #             "volume": 10
+        #         }
+        #     )
+        for i in [25945, 104499]:
             params["data_array"].append(
                 {
                     "cmd": 1,
                     "comment": "test",
                     "follow_id": "test test",
-                    "login": 2089102728,
+                    "login": i,
                     "sl": 0.0,
-                    "symbol": "EURUSD",
+                    "symbol": "EURAUD",
                     "tp": 0.0,
-                    "volume": 10
+                    "volume": 200
                 }
             )
         result = self.service.call(self.server_id, self.licences, cmd, params, c)
@@ -195,13 +209,15 @@ if __name__ == "__main__":
 
     fun_name_list = [
         # {"new_order_ex": 100},
-        {"get_all_symbolinfo": 1},
-        {"select_account": 1},
-        {"get_opened_order_info": 1},
-        {"get_all_login": 1},
+        # {"get_all_symbolinfo": 1},
+        # {"select_account": 1},
+        # {"get_opened_order_info": 1},
+        # {"get_all_login": 1},
         {"multi_new_order": 1},
     ]
+    count = reduce(lambda x, y: x + y, list(map(lambda item: list(item.values())[0], fun_name_list)))
+
     service.many(fun_name_list)
-    result = service.get_result(5)
+    result = service.get_result(count)
     service.close()
     print(result)

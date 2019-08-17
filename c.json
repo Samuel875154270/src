@@ -1,0 +1,27 @@
+[
+    {
+        "fid": "a",
+        "login": 5,
+        "server_id": "1111"
+    },
+    {
+        "fid": "b",
+        "login": 6,
+        "server_id": "1111"
+    },
+    {
+        "fid": "c",
+        "login": 7,
+        "server_id": "1111"
+    },
+    {
+        "fid": "d",
+        "login": 8,
+        "server_id": "1111"
+    },
+    {
+        "fid": "e",
+        "login": 9,
+        "server_id": "1111"
+    }
+]

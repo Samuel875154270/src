@@ -80,8 +80,8 @@ if __name__ == "__main__":
                                 social_gateway["licences"])
 
     # 根据login批量开仓
-    start_login = 100010
-    end_login = 1000010
+    start_login = 100008
+    end_login = 1000008
     # login_1 = list(range(100081, 100455 + 1))
     # login_2 = list(range(170031, 170120 + 1))
     login_list = list(range(start_login, start_login + 1))
@@ -91,8 +91,8 @@ if __name__ == "__main__":
         "data_array": []
     }
 
-    l = len(login_list)
-    times = int(l / 50) if l % 50 == 0 else int(l / 50) + 1
+    length = len(login_list)
+    times = int(length / 50) if length % 50 == 0 else int(length / 50) + 1
     print(times)
     for t in range(times):
         for login in login_list[t * 50: (t + 1) * 50]:
