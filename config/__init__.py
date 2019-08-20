@@ -6,8 +6,10 @@ gateway = {
         # 公有
         # "server_id": "d06f-1e8d6b745",  # test2
         # "licences": "e656b991-5706-4cb1-af8f-f69323f8f7e4",
-        "server_id": "b1b2-4ec7376e6",  # test1
-        "licences": "2cbf112c-26d8-4f54-930c-41aed44ed261",
+        # "server_id": "b1b2-4ec7376e6",  # test1
+        # "licences": "2cbf112c-26d8-4f54-930c-41aed44ed261",
+        "server_id": "42ec-d1106b09e",  # mt5
+        "licences": "756de4c5-2ed6-42eb-9217-3d4f9675d8f6",
     },
     "trading_system_gateway": {
         "host": "192.168.1.228",
@@ -26,8 +28,10 @@ gateway = {
         "port": 9500,
         # "server_id": "69b0-69167ae4a",
         # "licences": "91c60c06-09e6-47c8-8c2c-3b78af7f12f7",
-        "server_id": "2f3d-bef737348",
-        "licences": "31f3b906-35ac-4eca-b450-bcaaa69477f7"
+        # "server_id": "2f3d-bef737348",
+        # "licences": "31f3b906-35ac-4eca-b450-bcaaa69477f7",
+        "server_id": "42ec-d1106b09e",  # mt5
+        "licences": "756de4c5-2ed6-42eb-9217-3d4f9675d8f6",
     }
 }
 
