@@ -80,32 +80,32 @@ class ConcurrentHandler(object):
         params = {
             "data_array": []
         }
-        # for i in range(1):
-        #     params["data_array"].append(
-        #         {
-        #             "cmd": 1,
-        #             "comment": "test",
-        #             "follow_id": "test test",
-        #             "login": 2089102728,
-        #             "sl": 0.0,
-        #             "symbol": "EURUSD",
-        #             "tp": 0.0,
-        #             "volume": 10
-        #         }
-        #     )
-        for i in [25945, 104499]:
+        for i in range(1):
             params["data_array"].append(
                 {
                     "cmd": 1,
                     "comment": "test",
                     "follow_id": "test test",
-                    "login": i,
+                    "login": 2089102728,
                     "sl": 0.0,
-                    "symbol": "EURAUD",
+                    "symbol": "EURUSD",
                     "tp": 0.0,
-                    "volume": 200
+                    "volume": 10
                 }
             )
+        # for i in [25945, 104499]:
+        #     params["data_array"].append(
+        #         {
+        #             "cmd": 1,
+        #             "comment": "test",
+        #             "follow_id": "test test",
+        #             "login": i,
+        #             "sl": 0.0,
+        #             "symbol": "EURAUD",
+        #             "tp": 0.0,
+        #             "volume": 200
+        #         }
+        #     )
         result = self.service.call(self.server_id, self.licences, cmd, params, c)
         # print(result)
 
@@ -172,6 +172,19 @@ class ConcurrentHandler(object):
         result = self.service.call(self.server_id, self.licences, cmd, params, c)
         # print(result)
 
+    def select_account(self, c=1):
+        """
+        查询账号(mt5)
+        :param c:
+        :return:
+        """
+        cmd = "select_account"
+        params = {
+            "login": 40240012
+        }
+        result = self.service.call(self.server_id, self.licences, cmd, params, c)
+        # print(result)
+
     def many(self, fun_list):
         """
         批量请求不同接口
@@ -213,7 +226,8 @@ if __name__ == "__main__":
         # {"select_account": 1},
         # {"get_opened_order_info": 1},
         # {"get_all_login": 1},
-        {"multi_new_order": 1},
+        # {"multi_new_order": 1},
+        {"select_account": 2},
     ]
     count = reduce(lambda x, y: x + y, list(map(lambda item: list(item.values())[0], fun_name_list)))
 

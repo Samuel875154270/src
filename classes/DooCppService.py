@@ -1,32 +1,9 @@
 import common
+import config
 import json
 import os
 import socket
 import time
-
-
-def concat_result(list1, list2):
-    """
-    处理结果
-    :param list1:
-    :param list2:
-    :return:
-    """
-    list1 = sorted(list1, key=lambda x: list(x.items())[0][0])
-    list2 = sorted(list2, key=lambda x: list(x.items())[0][0])
-
-    if len(list1) != len(list2):
-        return False
-
-    result = []
-    for l in range(len(list1)):
-        result.append({
-            "request_id": list1[l]["request_id"],
-            "request": list1[l],
-            "response": list2[l],
-        })
-
-    return result
 
 
 def gateway_params(cmd, server_id, request_data, licences, request_return_type=1, is_sub=False):
@@ -43,6 +20,7 @@ def gateway_params(cmd, server_id, request_data, licences, request_return_type=1
     request_id = common.get_uuid()
     message_type = request_data.get("message_type")
     request_time = common.get_timestamp()
+    # request_time = request_time - 10 * 60
     # md5 加密参数
     request_key = common.get_md5("{}|{}|{}|{}".format(request_id, message_type, request_time, licences))
     # 网关参数格式
@@ -63,8 +41,8 @@ def gateway_params(cmd, server_id, request_data, licences, request_return_type=1
 
 
 class DooCppService(object):
+    rs = common.get_redis()
     client = False
-    request_data = []
 
     def init(self, host, port):
         """
@@ -92,7 +70,9 @@ class DooCppService(object):
             request_data = {}
 
         data = gateway_params(cmd, server_id, request_data, licences, request_return_type)
-        self.request_data.append(data)  # 记录每次请求的参数
+        # 记录每次请求的参数
+        self.rs.set(data["request_id"], json.dumps(data))
+        self.rs.expire(data["request_id"], config.redis["expire"])
 
         # 拼接数据格式
         data = "W{}QUIT".format(json.dumps(data)).encode()
@@ -147,8 +127,8 @@ class DooCppService(object):
             else:
                 result_list = result.split(b"\nend\r\n")
                 for r in result_list[:-1]:
-                    all_result.append(json.loads(r))
-                    name = "{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i)
+                    rp = json.loads(r)
+                    name = "../log/{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i)
                     if not os.path.exists(name):
                         file = open(name, "w", encoding="GBK")
                         file.close()
@@ -157,13 +137,18 @@ class DooCppService(object):
                     with open(name, "a", encoding="GBK") as file:
                         file.write("Time: {}\nResult: {}\n\n".format(
                             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())), r))
+                    # 组装结果
+                    redis_result = self.rs.get(rp["request_id"])
+                    all_result.append({
+                        "request_id": rp["request_id"],
+                        "request": json.loads(redis_result.decode()) if redis_result is not None else {},
+                        "response": rp,
+                    })
                 result = result_list[-1]
 
             times -= 1
 
-        finally_result = concat_result(self.request_data, all_result)
-
-        return finally_result
+        return all_result
 
     def tcp_close(self):
         """

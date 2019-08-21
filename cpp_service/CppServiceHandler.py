@@ -44,7 +44,7 @@ class CppServiceHandler(object):
         }
         self.client.send(cmd, server_id, licences, request_data, count=i)
 
-    def get(self, count):
+    def get(self, count=1):
         """
         获取结果
         :return:

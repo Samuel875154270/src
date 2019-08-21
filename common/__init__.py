@@ -1,4 +1,6 @@
+import config
 import hashlib
+import redis
 import time
 import uuid
 
@@ -28,3 +30,13 @@ def get_uuid():
     :return:
     """
     return uuid.uuid4().__str__()
+
+
+def get_redis():
+    """
+    获取Redis连接
+    :return:redis.Redis
+    """
+    pool = redis.ConnectionPool(host=config.redis["host"], port=config.redis["port"])
+    rs = redis.StrictRedis(connection_pool=pool)
+    return rs
