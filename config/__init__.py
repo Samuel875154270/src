@@ -74,7 +74,7 @@ redis = {
     "port": 6379,
     "auth": "",
     "password": "",
-    "expire": 600
+    "expire": 60
 }
 
 symbols = [
