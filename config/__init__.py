@@ -1,21 +1,29 @@
+import os
+
 """MT gateway配置"""
 gateway = {
     "social_gateway": {
         "host": "192.168.1.228",
         "port": 9400,
         # 公有
-        # "server_id": "d06f-1e8d6b745",  # test2
-        # "licences": "e656b991-5706-4cb1-af8f-f69323f8f7e4",
-        # "server_id": "b1b2-4ec7376e6",  # test1
-        # "licences": "2cbf112c-26d8-4f54-930c-41aed44ed261",
-        "server_id": "42ec-d1106b09e",  # mt5
-        "licences": "756de4c5-2ed6-42eb-9217-3d4f9675d8f6",
+        "server_id": "d06f-1e8d6b745",  # test2
+        "licences": "e656b991-5706-4cb1-af8f-f69323f8f7e4",
+        # "server_id": "0f4d-93a3094ed",  # test1
+        # "licences": "1f5f0007-75d3-4f8b-b1b8-2d63e8747eed",
+        # "server_id": "42ec-d1106b09e",  # mt5
+        # "licences": "756de4c5-2ed6-42eb-9217-3d4f9675d8f6",
     },
     "trading_system_gateway": {
         "host": "192.168.1.228",
         "port": 9600,
-        "server_id": "d0a9-838c7e7f4",
-        "licences": "5fc1873d-a582-44c4-9235-b4d57c7cbe96"
+        # MT5
+        # "server_id": "d0a9-838c7e7f4",
+        # "licences": "5fc1873d-a582-44c4-9235-b4d57c7cbe96",
+        # MT4
+        # "server_id": "975a-5f27ba02d",
+        # "licences": "4470ca70-f098-4320-9cb0-21717e65e77f",
+        "server_id": "d06f-1e8d6b745",  # test2
+        "licences": "e656b991-5706-4cb1-af8f-f69323f8f7e4",
     },
     "manager_check_gateway": {
         "host": "192.168.1.228",
@@ -75,6 +83,15 @@ redis = {
     "auth": "",
     "password": "",
     "expire": 60
+}
+
+# elastic search 配置文件
+elastic = {
+    'host': os.getenv('ES_HOST', '192.168.1.203'),
+    'port': os.getenv('ES_PORT', 9200),
+    'user': os.getenv('ES_USER', 'dootech'),
+    'pass': os.getenv('ES_PASS', 'jhdu2WEFJTvfRYrfewq97'),
+    'method': os.getenv('ES_METHOD', 'http')
 }
 
 symbols = [

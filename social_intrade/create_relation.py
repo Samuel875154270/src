@@ -32,7 +32,7 @@ params = {
     "follow_direction": "positive",
     "follow_symbols": config.symbols,
     "follow_multiple_type": "fixed",
-    "follow_multiple": 1,
+    "follow_multiple": 0.01,
     "order_loss_point": 0,
     "order_profit_point": 0,
     "follow_type": "all",

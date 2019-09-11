@@ -83,14 +83,14 @@ class ConcurrentHandler(object):
         for i in range(1):
             params["data_array"].append(
                 {
-                    "cmd": 1,
+                    "cmd": 0,
                     "comment": "test",
                     "follow_id": "test test",
-                    "login": 2089102728,
+                    "login": 101001,
                     "sl": 0.0,
                     "symbol": "EURUSD",
                     "tp": 0.0,
-                    "volume": 10
+                    "volume": 1
                 }
             )
         # for i in [25945, 104499]:
@@ -226,8 +226,8 @@ if __name__ == "__main__":
         # {"select_account": 1},
         # {"get_opened_order_info": 1},
         # {"get_all_login": 1},
-        # {"multi_new_order": 1},
-        {"select_account": 2},
+        {"multi_new_order": 1},
+        # {"select_account": 2},
     ]
     count = reduce(lambda x, y: x + y, list(map(lambda item: list(item.values())[0], fun_name_list)))
 

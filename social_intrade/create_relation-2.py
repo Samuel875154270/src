@@ -8,17 +8,17 @@ protocol = "http"
 host = "192.168.1.203:12913"
 api = "/follow/createRelationShip"
 
-fid_file = "./info/d06f-1e8d6b745_fid.json"
+fid_file = "./info/0f4d-93a3094ed_fid.json"
 
 with open(fid_file, "r") as file:
     fid = json.load(file)
 
-start_login = 171001
-pid = "b6be2e10-be3e"
+start_login = 101001
+pid = "d614ee14-cacf"
 count = 1000
 error_name = "error.log"
 
-headers["Cookie"] = "sessionID=08pY5jdaruKnITRCwPtC7J02hnYH2PvE; sessionID.sig=Gctp_XQL7E3IWoTEi4tDZ20q9J4"
+headers["Cookie"] = "sessionID=QtunJk8Qrt5QV6XJBmp5HgCm8vcaJXGe; sessionID.sig=Af_DKHnYFMC6P3fEj6w1wLtPZz4"
 headers["Host"] = host
 
 params = {
@@ -31,7 +31,7 @@ params = {
     "follow_direction": "positive",
     "follow_symbols": config.symbols,
     "follow_multiple_type": "fixed",
-    "follow_multiple": 1,
+    "follow_multiple": 0.01,
     "order_loss_point": 0,
     "order_profit_point": 0,
     "follow_type": "all",

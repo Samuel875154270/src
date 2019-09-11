@@ -128,7 +128,7 @@ class DooCppService(object):
                 result_list = result.split(b"\nend\r\n")
                 for r in result_list[:-1]:
                     rp = json.loads(r)
-                    name = "../log/{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i)
+                    name = "{}-{}.log".format(time.strftime("%Y%m%d", time.localtime(time.time())), i)
                     if not os.path.exists(name):
                         file = open(name, "w", encoding="GBK")
                         file.close()

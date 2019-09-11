@@ -88,10 +88,12 @@ class DooCppSubService(object):
         return json.loads(content)["response_data"]
 
     # async def long_receive(self, size=1024, name=""):
-    def long_receive(self, size=2048, name=""):
+    def long_receive(self, size=4096, name="", login="152188"):
         """
         长链接接收数据
+        :param: size
         :param: name
+        :param: login
         :return:
         """
         while True:
@@ -105,8 +107,9 @@ class DooCppSubService(object):
                     break
             content = content.replace("\nend\r", "")
             # print("{}".format(name), json.loads(content)["response_data"]["data_body"])
-            if "152188" in content:
-                print("{}".format(name), content)
+            if login in content:
+                print(content)
+                # print("{}\n".format(name), content)
                 # print("{}".format(name), json.dumps(json.loads(content)["response_data"]["data_body"], ensure_ascii=False))
 
     def tcp_close(self):

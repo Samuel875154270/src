@@ -8,11 +8,11 @@ headers = config.web_headers
 
 protocol = "http"
 host = "192.168.1.203:12913"
-headers["Cookie"] = "sessionID=08pY5jdaruKnITRCwPtC7J02hnYH2PvE; sessionID.sig=Gctp_XQL7E3IWoTEi4tDZ20q9J4"
-server_id = "d06f-1e8d6b745"
+headers["Cookie"] = "sessionID=QtunJk8Qrt5QV6XJBmp5HgCm8vcaJXGe; sessionID.sig=Af_DKHnYFMC6P3fEj6w1wLtPZz4"
+server_id = "0f4d-93a3094ed"
 role = "follow"  # publish、follow
-start_login = 171001
-end_login = 173000
+start_login = 101001
+end_login = 102001
 
 api = "/follow/create"
 headers["Host"] = host
