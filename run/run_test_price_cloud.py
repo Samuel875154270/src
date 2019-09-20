@@ -1,4 +1,4 @@
-from classes.PriceCloudService import TCPService
+from classes.PriceCloudService import PriceCloudService
 import config
 
 if __name__ == '__main__':
@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     # 外网，正确密码
     extranet = price_cloud["extranet"]
-    t = TCPService(extranet["host"], extranet["port"], price_cloud["secret_key"])
+    t = PriceCloudService(extranet["host"], extranet["port"], price_cloud["secret_key"])
     check = t.login(price_cloud["username"], price_cloud["password"])
     # check = t.login(price_cloud["username"], "")
     if check["code"] == 0:

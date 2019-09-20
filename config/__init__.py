@@ -66,6 +66,22 @@ price_cloud = {
     "password": "1MmH0AfGWnzd"
 }
 
+web_price_cloud = {
+    "intranet": {
+        # 内网
+        "host": "192.168.1.203",
+        "port": "12958"
+    },
+    "extranet": {
+        # 公网
+        "host": "songmaokeji.f3322.net",
+        "port": "12958"
+
+    },
+    "username": "client",
+    "password": "1MmH0AfGWnzd",
+}
+
 web_headers = {
     "Host": "",
     "Connection": "keep-alive",

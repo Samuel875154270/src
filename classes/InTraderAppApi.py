@@ -4,6 +4,7 @@ import requests
 import threading
 import websockets
 from urllib.parse import urlencode
+from requests_toolbelt import MultipartEncoder
 
 
 class InTraderApiService(object):
@@ -51,19 +52,49 @@ class InTraderApiService(object):
         params = {} if params is None else params
         url = "{}://{}{}".format(self.protocol, self.host, uri)
 
+        rp = json.dumps({"code": -10000, "data": 'The request method must be ["GET", "POST", "PUT", "DELETE"]'})
+        if method.upper() not in ["GET", "POST", "PUT", "DELETE"]:
+            return rp
+
         try:
             if method.upper() == "GET":
                 url = "{}?{}".format(url, urlencode(params).replace("+", "%20").replace("%27", "%22"))
-                print(url)
                 rp = self.http.get(url, cookies=self.cookies).text
-            else:
+            elif method.upper() == "POST":
                 rp = self.http.post(url, cookies=self.cookies, json=params, headers=self.headers).text
-
-            # rp = json.loads(rp)
+            elif method.upper() == "PUT":
+                rp = self.http.put(url, cookies=self.cookies, json=params, headers=self.headers).text
+            elif method.upper() == "DELETE":
+                rp = self.http.delete(url, cookies=self.cookies, json=params, headers=self.headers).text
             return rp
         except Exception as e:
             print(e)
             return False
+
+    def upload(self, uri, file_path):
+        """
+        上传文件接口
+        :param uri:
+        :param file_path:
+        :return:
+        """
+        url = "{}://{}{}".format(self.protocol, self.host, uri)
+
+        file = open(file_path, "rb")
+        data = MultipartEncoder(
+            fields={
+                "file": (file_path.split("/")[-1], file)
+            }
+        )
+        self.headers["Content-Type"] = data.content_type
+        try:
+            rp = self.http.post(url, cookies=self.cookies, data=data, headers=self.headers).text
+            return rp
+        except Exception as e:
+            print(e)
+            return False
+        finally:
+            file.close()
 
     async def ws_call(self, uri):
         """
@@ -109,13 +140,8 @@ if __name__ == "__main__":
     service = InTraderApiService(api_host)
     service.init(api_login_uri, api_login_params)
 
-    # asyncio.new_event_loop().run_until_complete(service.ws_call("/v1/ws/quote"))
-    # asyncio.new_event_loop().run_forever()
+    asyncio.new_event_loop().run_until_complete(service.ws_call("/v1/ws/quote"))
+    asyncio.new_event_loop().run_forever()
 
     # r = service.call("GET", "/v1/user/fund/wallet", {})
     # print(r)
-
-    service.th_run("/v1/ws/quote")
-
-    r = service.call("POST", "/v1/trade/operate/place", {"symbol": "USDJPY", "cmd": 1, "volume": 0.01})
-    print(r)
