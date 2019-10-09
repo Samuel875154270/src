@@ -21,7 +21,7 @@ def build(data_type, version, data, secret_key):
 
 class PriceCloudService(object):
     version = "1.0.0"
-    size = 2048
+    size = 1024
 
     def __init__(self, host, port, secret_key=None):
         """
@@ -60,13 +60,20 @@ class PriceCloudService(object):
         return result["data"]
 
     def get_price(self):
+        init_content = b""
         while True:
-            content = self.client.recv(self.size).decode().replace("QUIT", "|").split("|")[0]
-            print(content)
+            init_content += self.client.recv(self.size)
+            if b"QUIT" in init_content:
+                init_list = init_content.split(b"QUIT")
+                init_content = b"QUIT".join(init_list[1:])
+                cur_content = init_list[0].decode()
+
+                print(json.loads(cur_content[1:]))
 
 
 class WebPriceCloudService(object):
     size = 2048
+    timeout = 10
     protocol = "http"
     auth_uri = "/auth"
     url = ""
@@ -95,8 +102,10 @@ class WebPriceCloudService(object):
         r = self.s.post(
             url="{}{}".format(self.url, self.auth_uri),
             json={"u": self.up[0], "p": self.up[1]},
-            headers={"Content-Type": "application/json"}
+            headers={"Content-Type": "application/json"},
+            timeout=self.timeout
         ).text
+        print("init", r)
         self.headers["X-Auth-Token"] = json.loads(r)["data"]
 
     def get_symbols(self):
@@ -124,8 +133,10 @@ class WebPriceCloudService(object):
         r = self.s.get(
             url=url,
             headers=self.headers,
-            params=params
+            params=params,
+            timeout=self.timeout
         ).text
+        print(r)
         r = json.loads(r)
         return r
 

@@ -4,8 +4,8 @@ import time
 
 if __name__ == '__main__':
     price_cloud = config.web_price_cloud
-    host = price_cloud["intranet"]["host"]
-    port = price_cloud["intranet"]["port"]
+    host = price_cloud["extranet"]["host"]
+    port = price_cloud["extranet"]["port"]
     username = price_cloud["username"]
     password = price_cloud["password"]
 
@@ -15,4 +15,4 @@ if __name__ == '__main__':
         price = service.get_market({"symbol": "AUDCAD-Sam.g"})
         # print(price)
         print(price.get("data"))
-        time.sleep(5)
+        # time.sleep(5)

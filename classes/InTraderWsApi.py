@@ -25,7 +25,7 @@ class InTraderWsService(object):
         url = "{}://{}{}".format(self.protocol, self.host, uri)
         url = "{}?{}".format(url, urlencode(params).replace("+", "%20").replace("%27", "%22"))
         init = self.http.get(url, headers=self.headers)
-        print(init.text)
+        # print(init.text)
         self.ws_cookies = dict(init.cookies)
         # print("ws_cookies", self.ws_cookies)
 
@@ -38,7 +38,7 @@ class InTraderWsService(object):
         url = "{}://{}{}".format(self.protocol, self.host, login_uri)
         rp = self.http.post(url, json=login_params, headers=self.headers)
         self.cookies = dict(rp.cookies)
-        print(rp.text)
+        # print(rp.text)
         # print("cookies", self.cookies)
 
     async def ws_call(self, uri):
@@ -55,6 +55,7 @@ class InTraderWsService(object):
             while True:
                 result = await web_socket.recv()
                 print(result)
+                # return result
 
 
 if __name__ == "__main__":
@@ -65,6 +66,7 @@ if __name__ == "__main__":
     service = InTraderWsService(api_host)
     service.init(api_login_uri, api_login_params)
 
-    # asyncio.get_event_loop().run_until_complete(service.ws_call("/v1/ws/quote"))
-    asyncio.get_event_loop().run_until_complete(service.ws_call("/v1/ws/order"))
-    asyncio.get_event_loop().run_forever()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(service.ws_call("/v1/ws/quote"))
+    # loop.run_forever()
+
