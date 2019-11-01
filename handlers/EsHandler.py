@@ -30,26 +30,32 @@ class EsHanlders(tornado.web.RequestHandler):
         :param kwargs:
         :return:
         """
-        body = self.request.body.decode()
-        if common.is_json(body):
-            body = json.loads(body)
-            index = body["index"]
-            doc = body["doc"]
-            es_body = body["body"]
+        try:
+            body = self.request.body.decode()
+            if common.is_json(body):
+                body = json.loads(body)
+                index = body["index"]
+                doc = body["doc"]
+                es_body = body["body"]
 
-            if index and doc and es_body:
-                result = self.es.get(index, doc, es_body)
-                self.finish({
-                    "code": 0,
-                    "info": result
-                })
+                if index and doc and es_body:
+                    result = self.es.get(index, doc, es_body)
+                    self.finish({
+                        "code": 0,
+                        "info": result
+                    })
+                else:
+                    self.finish({
+                        "code": -2,
+                        "info": "index, doc, body must be not empty"
+                    })
             else:
                 self.finish({
-                    "code": -2,
-                    "info": "index, doc, body must be not empty"
+                    "code": -1,
+                    "info": "the data in body is not a json"
                 })
-        else:
+        except Exception as e:
             self.finish({
-                "code": -1,
-                "info": "the data in body is not a json"
+                "code": -1000,
+                "info": f"An exception has occurred, exception is: {e} "
             })
