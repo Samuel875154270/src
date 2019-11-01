@@ -105,7 +105,7 @@ class WebPriceCloudService(object):
             headers={"Content-Type": "application/json"},
             timeout=self.timeout
         ).text
-        print("init", r)
+        # print("init", r)
         self.headers["X-Auth-Token"] = json.loads(r)["data"]
 
     def get_symbols(self):
@@ -153,7 +153,7 @@ class WebPriceCloudService(object):
             headers=self.headers,
             params=params
         ).text
-        r = json.loads(r)
+        # r = json.loads(r)
         return r
 
     def again(self):

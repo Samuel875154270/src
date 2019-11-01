@@ -1,4 +1,5 @@
 import config
+import json
 import hashlib
 import redis
 import time
@@ -40,3 +41,16 @@ def get_redis():
     pool = redis.ConnectionPool(host=config.redis["host"], port=config.redis["port"])
     rs = redis.StrictRedis(connection_pool=pool)
     return rs
+
+
+def is_json(value):
+    """
+    判断字符串是否为json格式
+    :param value:
+    :return:
+    """
+    try:
+        json.loads(value)
+        return True
+    except TypeError:
+        return False

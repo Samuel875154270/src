@@ -110,6 +110,22 @@ elastic = {
     'method': os.getenv('ES_METHOD', 'http')
 }
 
+# mongodb 配置文件
+mongodb = {
+    # 测试环境
+    "host": "192.168.30.159",
+    "port": 27017,
+    "user": "price-user",
+    "password": "dfA4FxnCgw0XIxqoHL",
+    "db": "price-cloud",
+    # 预发布环境
+    # "host": "192.168.30.155",
+    # "port": 27017,
+    # "user": "dootech",
+    # "password": "TLcyNHG6NP03jaDObqUnMFESebjnfu",
+    # "db": "admin"
+}
+
 symbols = [
     "AUDUSD",
     "EURUSD",
