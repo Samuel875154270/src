@@ -4,6 +4,7 @@ import hashlib
 import redis
 import time
 import uuid
+import tornado.log
 
 
 def get_md5(string):
@@ -43,9 +44,9 @@ def get_redis():
     return rs
 
 
-def is_json(value):
+def is_dict(value):
     """
-    判断字符串是否为json格式
+    判断字符串是否为dict格式
     :param value:
     :return:
     """
@@ -54,3 +55,29 @@ def is_json(value):
         return True
     except TypeError:
         return False
+
+
+def is_json(value):
+    """
+    判断字符串是否为json格式
+    :param value:
+    :return:
+    """
+    try:
+        json.dumps(value)
+        return True
+    except TypeError:
+        return False
+
+
+def log_request(handler):
+    if handler.get_status() < 400:
+        log_method = tornado.log.access_log.info
+    elif handler.get_status() < 500:
+        log_method = tornado.log.access_log.warning
+    else:
+        log_method = tornado.log.access_log.error
+
+    request_time = 1000.0 * handler.request.request_time()
+    log_method("%d %s %.2fms %s", handler.get_status(), handler._request_summary(), request_time,
+               handler.request.headers.get("User-Agent", ""))

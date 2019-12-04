@@ -1,5 +1,5 @@
 from handlers import *
 
 route = [
-    (r"/es", EsHanlders),
+    (r"/es/??(\w*-*\w*-*\w*-*\w*-*\w*)", EsHanlders),
 ]

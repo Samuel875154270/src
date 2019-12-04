@@ -16,14 +16,23 @@ class ES(object):
         self.es = Elasticsearch(hosts=address, retry_on_timeout=True, maxsize=500, timeout=50, use_ssl=is_https,
                                 verify_certs=True, ca_certs=certifi.where())
 
-    def get(self, index, doc_type, body, params=None):
+    def get(self, index, doc_type, body, params=None, scroll=None):
         """
         请求es查询
         :param index:
         :param doc_type:
         :param body:
         :param params:
+        :param scroll:
         :return:
         """
         params = {} if params is None else params
-        return self.es.search(index=index, doc_type=doc_type, body=body, params=params)
+        result = self.es.search(index=index, doc_type=doc_type, body=body, params=params, scroll=scroll)
+        return result
+
+    def scroll(self, scroll_id, scroll="5m"):
+        result = self.es.scroll(
+            scroll_id=scroll_id,
+            scroll=scroll
+        )
+        return result

@@ -1,12 +1,13 @@
 from service import *
 from classes.Es import ES
+from .BaseHandler import BaseHandler
 import common
 import json
 import tornado.gen
 import tornado.web
 
 
-class EsHanlders(tornado.web.RequestHandler):
+class EsHanlders(BaseHandler):
     es = ES()
     executor = Executor()
     service = ExecutorRequest()
@@ -20,6 +21,7 @@ class EsHanlders(tornado.web.RequestHandler):
         :param kwargs:
         :return:
         """
+        self.echo_json(0, f"{self.request.uri}")
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
@@ -32,30 +34,20 @@ class EsHanlders(tornado.web.RequestHandler):
         """
         try:
             body = self.request.body.decode()
-            if common.is_json(body):
+            if common.is_dict(body):
                 body = json.loads(body)
                 index = body["index"]
                 doc = body["doc"]
                 es_body = body["body"]
-
                 if index and doc and es_body:
-                    result = self.es.get(index, doc, es_body)
-                    self.finish({
-                        "code": 0,
-                        "info": result
-                    })
+                    # result = self.es.get(index, doc, es_body)
+                    result = None
+                    self.echo_json(0, result)
+
                 else:
-                    self.finish({
-                        "code": -2,
-                        "info": "index, doc, body must be not empty"
-                    })
+                    self.echo_json(-2, "index, doc, body must be not empty")
             else:
-                self.finish({
-                    "code": -1,
-                    "info": "the data in body is not a json"
-                })
+                self.echo_json(-1, "the data in body is not a json")
+
         except Exception as e:
-            self.finish({
-                "code": -1000,
-                "info": f"An exception has occurred, exception is: {e} "
-            })
+            self.echo_json(-1000, f"An exception has occurred, exception is: {e}")

@@ -103,10 +103,10 @@ redis = {
 
 # elastic search 配置文件
 elastic = {
-    'host': os.getenv('ES_HOST', '192.168.1.203'),
-    'port': os.getenv('ES_PORT', 9200),
+    'host': os.getenv('ES_HOST', '192.168.30.10'),
+    'port': os.getenv('ES_PORT', 32000),
     'user': os.getenv('ES_USER', 'dootech'),
-    'pass': os.getenv('ES_PASS', 'jhdu2WEFJTvfRYrfewq97'),
+    'pass': os.getenv('ES_PASS', ''),
     'method': os.getenv('ES_METHOD', 'http')
 }
 
@@ -123,7 +123,13 @@ mongodb = {
     # "port": 27017,
     # "user": "dootech",
     # "password": "TLcyNHG6NP03jaDObqUnMFESebjnfu",
-    # "db": "admin"
+    # "db": "admin",
+    # 生产环境
+    # "host": "47.244.48.58",
+    # "port": 27017,
+    # "user": "r_price",
+    # "password": "Bka2qvMjC8l1IVNDxY9cESbw3",
+    # "db": "price_cloud",
 }
 
 symbols = [
