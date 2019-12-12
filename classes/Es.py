@@ -1,6 +1,7 @@
 import certifi
 import config
 from elasticsearch import Elasticsearch
+from elasticsearch import helpers
 
 
 class ES(object):
@@ -35,4 +36,29 @@ class ES(object):
             scroll_id=scroll_id,
             scroll=scroll
         )
+        return result
+
+    def scan(self, index, doc_type, query=None,  scroll="5m", size=1000, request_timeout=None, clear_scroll=True):
+        """
+
+        :param index:
+        :param doc_type:
+        :param query:
+        :param scroll:
+        :param size:
+        :param request_timeout:
+        :param clear_scroll:
+        :return:
+        """
+        result = helpers.scan(
+            client=self.es,
+            index=index,
+            doc_type=doc_type,
+            query=query,
+            scroll=scroll,
+            size=size,
+            request_timeout=request_timeout,
+            clear_scroll=clear_scroll,
+        )
+
         return result

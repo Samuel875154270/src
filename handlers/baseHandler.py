@@ -1,8 +1,3 @@
-"""
- * @author    dooTech
- * @copyright Copyright (c) 2014-2016 DooHolding Inc. (http://www.doo.tech)
-"""
-
 import tornado.web
 import json
 import logging

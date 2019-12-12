@@ -1,6 +1,6 @@
 from service import *
 from classes.Es import ES
-from .BaseHandler import BaseHandler
+from .baseHandler import BaseHandler
 import common
 import json
 import tornado.gen
