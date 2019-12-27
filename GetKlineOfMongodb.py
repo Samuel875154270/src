@@ -4,7 +4,7 @@ import csv
 import time
 
 cfg = config.mongodb
-client = Mongodb(cfg["host"], cfg["port"], cfg["user"], cfg["password"], cfg["db"], is_live=False)
+client = Mongodb(cfg["host"], cfg["port"], cfg["user"], cfg["password"], cfg["db"], is_live=True)
 
 
 def get_timestamp(time_str=None):
@@ -117,14 +117,14 @@ if __name__ == "__main__":
     # date = 20191028
     # start = get_timestamp("2019-10-28 21:30:00")
     # end = get_timestamp("2019-10-28 22:30:00")
-    # date = 20191127
-    # start = get_timestamp("2019-11-27 00:00:00")
-    # end = get_timestamp("2019-11-27 23:59:59")
+    date = 20191212
+    start = get_timestamp("2019-12-12 10:00:00")
+    end = get_timestamp("2019-12-12 11:00:00")
 
-    start = get_timestamp("2019-11-29 08:00:00")
-    end = get_timestamp("2019-11-29 15:59:59")
-
-    get_k("d930ed50-d475-11e9-b6ae-02bc60277759", "c281e474-d475-11e9-b6ae-02bc60277759", "1", start, end)
+    # start = get_timestamp("2019-11-29 08:00:00")
+    # end = get_timestamp("2019-11-29 15:59:59")
+    #
+    # get_k("d930ed50-d475-11e9-b6ae-02bc60277759", "c281e474-d475-11e9-b6ae-02bc60277759", "1", start, end)
 
     """测试环境"""
     # get_k(symbol_id="200", source="9", period="1", start=start, end=end)
@@ -139,7 +139,7 @@ if __name__ == "__main__":
     #                date=date)  # EURUSD.m
 
     """生产环境"""
-    # get_init_price(symbol_id="142", source="3", start=start, end=end, date=date)  # EURUSD.p
+    get_init_price(symbol_id="142", source="3", start=start, end=end, date=date)  # EURUSD.p
     # get_init_price(symbol_id="222", source="5", start=start, end=end, date=date)  # CL_1912.h
     # get_init_price(symbol_id="200", source="1", start=start, end=end, date=date)  # BTCUSDT.b
     # get_init_price(symbol_id="200", source="9", start=start, end=end, date=date)  # BTCUSDT.h

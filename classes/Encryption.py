@@ -3,7 +3,18 @@ import datetime
 import hashlib
 from Crypto.Cipher import AES, DES3
 from Crypto.Util.Padding import pad
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
+
+
+def get_md5(string):
+    """
+
+    :param string:
+    :return:
+    """
+    m = hashlib.md5()
+    m.update(string.encode())
+    return m.hexdigest()
 
 
 class MyEncode(object):
@@ -24,28 +35,20 @@ class MyEncode(object):
         :return:
         """
         aes = AES.new(key=self.key, mode=AES.MODE_CBC, IV=self.iv)
-        encode_aes = aes.encrypt(self.pad(string))
-        encode_string = base64.encodebytes(encode_aes).replace(b"\n", b"").decode()
-        print(encode_string)
-        return encode_string.replace("+", "-").replace("/", "_")
+        encode_aes = aes.encrypt(self._pad(string))
+        en_string = base64.encodebytes(encode_aes).replace(b"\n", b"").decode()
+        return en_string.replace("+", "-").replace("/", "_")
 
     @staticmethod
-    def pad(string):
-        size = 32
-        pad_string = string.encode() + b"\0" * (size - len(string) % size)
-        print(len(pad_string), pad_string)
-        return pad_string
-
-    @staticmethod
-    def get_md5(string):
+    def _pad(string):
         """
 
         :param string:
         :return:
         """
-        m = hashlib.md5()
-        m.update(string.encode())
-        return m.hexdigest()
+        size = 32
+        pad_string = string.encode() + b"\0" * (size - len(string) % size)
+        return pad_string
 
 
 class TcEncode(object):
@@ -116,4 +119,4 @@ if __name__ == "__main__":
     else:
         url = f"https://site.ct.recognia.com/doo/serve.shtml?{encode_string}"
 
-    print(params["page"], ": ", url)
+    print(f'{params["page"]}: ', url)

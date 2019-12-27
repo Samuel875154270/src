@@ -113,11 +113,11 @@ elastic = {
 # mongodb 配置文件
 mongodb = {
     # 测试环境
-    "host": "192.168.30.159",
-    "port": 27017,
-    "user": "price-user",
-    "password": "dfA4FxnCgw0XIxqoHL",
-    "db": "price-cloud",
+    # "host": "192.168.30.159",
+    # "port": 27017,
+    # "user": "price-user",
+    # "password": "dfA4FxnCgw0XIxqoHL",
+    # "db": "price-cloud",
     # 预发布环境
     # "host": "192.168.30.155",
     # "port": 27017,
@@ -125,11 +125,11 @@ mongodb = {
     # "password": "TLcyNHG6NP03jaDObqUnMFESebjnfu",
     # "db": "admin",
     # 生产环境
-    # "host": "47.244.48.58",
-    # "port": 27017,
-    # "user": "r_price",
-    # "password": "Bka2qvMjC8l1IVNDxY9cESbw3",
-    # "db": "price_cloud",
+    "host": "47.244.48.58",
+    "port": 27017,
+    "user": "r_price",
+    "password": "Bka2qvMjC8l1IVNDxY9cESbw3",
+    "db": "price_cloud",
 }
 
 symbols = [
