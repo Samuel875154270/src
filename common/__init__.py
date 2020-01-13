@@ -18,12 +18,18 @@ def get_md5(string):
     return obj.hexdigest()
 
 
-def get_timestamp():
+def get_timestamp(str_time: str=""):
     """
     获取时间戳
+    :param str_time:
     :return:
     """
-    return int(time.time())
+    if str_time == "":
+        timestamp = int(time.time())
+    else:
+        timestamp = int(time.mktime(time.strptime(str_time, "%Y-%m-%d %H:%M:%S")))
+
+    return timestamp
 
 
 def get_uuid():
@@ -68,16 +74,3 @@ def is_json(value):
         return True
     except TypeError:
         return False
-
-
-def log_request(handler):
-    if handler.get_status() < 400:
-        log_method = tornado.log.access_log.info
-    elif handler.get_status() < 500:
-        log_method = tornado.log.access_log.warning
-    else:
-        log_method = tornado.log.access_log.error
-
-    request_time = 1000.0 * handler.request.request_time()
-    log_method("%d %s %.2fms %s", handler.get_status(), handler._request_summary(), request_time,
-               handler.request.headers.get("User-Agent", ""))

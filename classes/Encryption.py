@@ -1,9 +1,12 @@
 import base64
+import csv
 import datetime
 import hashlib
+import time
 from Crypto.Cipher import AES, DES3
 from Crypto.Util.Padding import pad
-from urllib.parse import urlencode, quote
+from urllib.parse import urlencode
+import requests
 
 
 def get_md5(string):
@@ -98,7 +101,6 @@ class TcEncode(object):
 
 if __name__ == "__main__":
     time_format: str = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
-    print(time_format)
     params = {
         "aci": time_format,
         "page": "featured_forex",  # economic_calendar、featured_forex、av_ideas
@@ -108,15 +110,22 @@ if __name__ == "__main__":
         # "uty": "FxOnly",
         # "usg": "Demo"
     }
-    init_string = ""
-    for k, v in params.items():
-        init_string += f"{k}={v}&"
 
     tc = TcEncode()
-    encode_string = tc.des_encode(init_string[:-1])
-    if params["page"] in ["economic_calendar", "featured_forex"]:
-        url = f"https://site.recognia.com/doo/serve.shtml?{encode_string}"
-    else:
-        url = f"https://site.ct.recognia.com/doo/serve.shtml?{encode_string}"
+    with open("C:\\Users\\Sam\\Desktop\\url.csv", mode="w", newline="") as file:
+        write = csv.writer(file)
 
-    print(f'{params["page"]}: ', url)
+        for i in range(2100):
+            params["usi"] = i
+            init_string = ""
+            for k, v in params.items():
+                init_string += f"{k}={v}&"
+
+            encode_string = tc.des_encode(init_string[:-1])
+            if params["page"] in ["economic_calendar", "featured_forex"]:
+                url = f"https://site.recognia.com/doo/serve.shtml?{encode_string}"
+            else:
+                url = f"https://site.ct.recognia.com/doo/serve.shtml?{encode_string}"
+
+            write.writerow([encode_string])
+            print(f'{params["page"]}: ', url, i)

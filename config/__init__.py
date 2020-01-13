@@ -1,5 +1,15 @@
 import os
 
+# MySQL
+mysql = {
+    "db": os.getenv("DB_NAME", "doo_platform_api"),
+    "host": os.getenv("DB_HOST", "192.168.1.205"),
+    "user": os.getenv("DB_USER", "root"),
+    "passwd": os.getenv("DB_PASSWORD", "1UP3UoS8xMebsMqMggH2"),
+    "port": int(os.getenv("DB_PORT", 3306)),
+    "charset": os.getenv("DB_CHARSET", "utf8")
+}
+
 """MT gateway配置"""
 gateway = {
     "social_gateway": {
