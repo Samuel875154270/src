@@ -52,13 +52,15 @@ class Service(object):
         :return:
         """
         size = 1024 if size is 0 else size
+        end_length = len(end)
         message: bytes = b""
         content = b""
         while message is not False:
             message = self._client.recv(size)
             content += message
-            content_length = len(content)
-            if message[len(message) - 5:] == end or (content_length > 0 and content[content_length - 5:] == end):
+            message_length, content_length = len(message), len(content)
+            if message[message_length - end_length:] == end or (
+                    content_length > 0 and content[content_length - end_length:] == end):
                 break
 
         return content.decode()[:-5]

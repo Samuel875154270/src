@@ -3,7 +3,7 @@ import threading
 import uuid
 
 
-def run(r_id, r_type, r_cmd, r_data):
+def run(r_id, r_type, r_cmd, r_data, i):
     """
 
     :param r_id:
@@ -16,19 +16,20 @@ def run(r_id, r_type, r_cmd, r_data):
 
     service.send(r_id, r_type, r_cmd, r_data)
     result = service.receive()
-    print(result)
+    print(i, result)
 
 
 if __name__ == "__main__":
     message_type = "CRM"
     request_data = {
-        "login": 2089102539
+        "login": 2089102539,
+        "password": "abc123"
     }
-    cmd = "select_account"
+    cmd = "check_pwd"
     threads = []
-    for i in range(1):
+    for i in range(1000):
         request_id = str(uuid.uuid4())
-        thread = threading.Thread(target=run, args=(request_id, message_type, cmd, request_data))
+        thread = threading.Thread(target=run, args=(request_id, message_type, cmd, request_data, i))
         threads.append(thread)
         thread.start()
 

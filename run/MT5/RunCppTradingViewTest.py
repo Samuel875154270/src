@@ -71,7 +71,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_get_chart(self):
         """
-        MT4 获取图表
+        MT5 获取图表
         :return:
         """
         # period：1 / 5 / 15 / 30 / 60 / 240 / 1440 / 10080 / 43200
@@ -88,7 +88,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_get_mt_info(self):
         """
-        MT4 获取时区
+        MT5 获取时区
         :return:
         """
         request_data = {}
@@ -99,7 +99,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_get_group_info(self):
         """
-        MT4 获取组信息
+        MT5 获取组信息
         :return:
         """
         request_data = {}
@@ -110,7 +110,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_get_history_order_info(self):
         """
-        MT4 获取历史订单
+        MT5 获取历史订单
         :return:
         """
         request_data = {
@@ -125,7 +125,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_get_symbol_tick(self):
         """
-        MT4 获取品种报价信息
+        MT5 获取品种报价信息
         :return:
         """
         request_data = {
@@ -138,7 +138,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_multi_get_symbol_tick(self):
         """
-        MT4 获取品种报价信息
+        MT5 获取品种报价信息
         :return:
         """
         request_data = {
