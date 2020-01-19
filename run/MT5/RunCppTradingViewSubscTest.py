@@ -43,7 +43,6 @@ class RunCppTest(unittest.TestCase):
         :return:
         """
         cls.service = Service(port=9600)
-        # cls.message_type = "TRADE"
         cls.message_type = "TradingSystem"
 
     def setUp(self):

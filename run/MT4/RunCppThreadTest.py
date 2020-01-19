@@ -25,7 +25,7 @@ if __name__ == "__main__":
         "login": 2089102539,
         "password": "abc123"
     }
-    cmd = "check_pwd"
+    cmd = "get_all_login"
     threads = []
     for i in range(1000):
         request_id = str(uuid.uuid4())

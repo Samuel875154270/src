@@ -24,8 +24,10 @@ class Service(object):
         _port = 9500 if port is 0 else port
         self._client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._client.connect((_host, _port))
-        if time_out is not None:
+        if time_out is None:
             self._client.settimeout(20)
+        else:
+            self._client.settimeout(time_out)
 
     def send(self, request_id, message_type, cmd, request_data=None, request_return_type=None):
         """
@@ -106,9 +108,9 @@ class Service(object):
 
         return params.encode()
 
-    def __del__(self):
-        """
-        断开TCP连接
-        :return:
-        """
-        self._client.close()
+    # def __del__(self):
+    #     """
+    #     断开TCP连接
+    #     :return:
+    #     """
+    #     self._client.close()

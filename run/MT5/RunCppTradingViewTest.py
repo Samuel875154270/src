@@ -44,8 +44,8 @@ class RunCppTest(unittest.TestCase):
         对象初始化
         :return:
         """
-        cls.service = Service(port=9600)
-        # cls.message_type = "TRADE"
+        cls.service = Service(port=9600, server_id="d0a9-838c7e7f4", licenses="5fc1873d-a582-44c4-9235-b4d57c7cbe96",
+                              time_out=300)
         cls.message_type = "TradingSystem"
 
     def setUp(self):
@@ -77,9 +77,9 @@ class RunCppTest(unittest.TestCase):
         # period：1 / 5 / 15 / 30 / 60 / 240 / 1440 / 10080 / 43200
         request_data = {
             "symbol": "USDJPY",
-            "from": 0,
+            "from": common.get_timestamp() - 3600 * 24 * 5,
             "to": common.get_timestamp(),
-            "period": 15
+            "period": 1
         }
         cmd = "get_chart"
         request_id = str(uuid.uuid4())
