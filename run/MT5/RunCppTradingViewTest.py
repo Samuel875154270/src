@@ -97,7 +97,7 @@ class RunCppTest(unittest.TestCase):
         self.service.send(request_id, self.message_type, cmd, request_data, 1)
         self.result = self.service.receive()
 
-    def test_get_group_info(self):
+    def test_get_group_info(self):  # 不存在该接口
         """
         MT5 获取组信息
         :return:
@@ -108,7 +108,7 @@ class RunCppTest(unittest.TestCase):
         self.service.send(request_id, self.message_type, cmd, request_data, 1)
         self.result = self.service.receive()
 
-    def test_get_history_order_info(self):
+    def test_get_history_order_info(self):  # 不存在该接口
         """
         MT5 获取历史订单
         :return:

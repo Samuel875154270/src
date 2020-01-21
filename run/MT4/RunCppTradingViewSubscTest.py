@@ -55,7 +55,7 @@ class RunCppTest(unittest.TestCase):
 
     def test_subsc_trade_info(self):
         """
-        MT4 获取品种报价信息
+        MT4 订阅trade信息
         :return:
         """
         request_data = {}
